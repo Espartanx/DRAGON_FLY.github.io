@@ -5,7 +5,7 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx'); // Usar tu clave pública de prueba
+      var stripe = Stripe('pk_live_51PCwWVDENwAUw7DXql5Gh12eJBu6vRuICyZSm1R7QbNFZjIv4ybZJBJZIKte9Ek6Ue9vrwwvwwEXZ6E8reKQRcvZ00YwNJtnSr'); // Usar tu clave pública de prueba
       var elements = stripe.elements();
       var card = elements.create('card');
       card.mount('#card-element');
