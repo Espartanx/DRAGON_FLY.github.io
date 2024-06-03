@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stripe Card Verification</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx'); // Usar tu clave pública de prueba
+      var elements = stripe.elements();
+      var card = elements.create('card');
+      card.mount('#card-element');
+
+      document.getElementById('card-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+          if (result.error) {
+            // Inform the user if there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+          } else {
+            // Send the token to your server.
+            fetch('/verify_card', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({token: result.token.id})
+            }).then(function(response) {
+              return response.json();
+            }).then(function(data) {
+              if (data.success) {
+                alert('Card is valid');
+              } else {
+                alert('Card is not valid');
+              }
+            });
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <form id="card-form">
+    <div id="card-element"></div>
+    <button type="submit">Verify Card</button>
+    <div id="card-errors"></div>
+  </form>
+</body>
+</html>
